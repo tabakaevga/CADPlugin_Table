@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using SldWorks;
 
-namespace CadPlugin
+namespace CadPlugin.Builders
 {
     /// <summary>
     /// Класс построения ножек стола
     /// </summary>
     public class TableLegsBuilder : BaseTableBuilder
     {
-        /// <summary>
-        /// Параметры ножек
-        /// </summary>
-        private readonly Dictionary<string, double> _legParameters;
-
+        #region Constructors
 
         /// <inheritdoc />
-        /// <param name="legParameters">Параметры ножек</param>
         public TableLegsBuilder(IModelDoc2 modelDoc,
-            Dictionary<string, double> tableTopParameters, Dictionary<string, double> legParameters): base(modelDoc, tableTopParameters)
+            Dictionary<string, double> parameters): 
+            base(modelDoc, parameters)
         {
-            _legParameters = legParameters ?? throw new ArgumentNullException("legParameters are null");
         }
+
+        #endregion
+        
+        #region Public Methods
 
         /// <inheritdoc />
         public override void Build()
         {
             BuildLegs();
         }
+
+        #endregion
 
         #region Private Methods
 
@@ -41,9 +41,10 @@ namespace CadPlugin
             ModelDoc.SketchManager.InsertSketch(true);
 
             ModelDoc.Extension.SelectByID2("Sketch2", "SKETCH", 0, 0, 0, false, 0, null, 0);
-
-            var xCenterLeft = -TableTopParameters["Length"] / 2 + _legParameters["Edge Offset"] + _legParameters["Radius"];
-            var yCenterLeft = -TableTopParameters["Width"] / 2 + _legParameters["Edge Offset"] + _legParameters["Radius"];
+            var xCenterLeft = -Parameters["Top Length"] / 2 
+                              + Parameters["Edge Offset"] + Parameters["Legs Radius"];
+            var yCenterLeft = -Parameters["Top Width"] / 2 
+                              + Parameters["Edge Offset"] + Parameters["Legs Radius"];
             var yCenterRight = -yCenterLeft;
             var xCenterRight = -xCenterLeft;
 
@@ -57,9 +58,10 @@ namespace CadPlugin
 
             ModelDoc.ClearSelection2(true);
             ModelDoc.Extension.SelectByID2("Arc4", "SKETCHSEGMENT", 0, 0, 0, false, 0, null, 0);
-            ModelDoc.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, _legParameters["Height"], 0,
-                false, false, false, false, 1.74532925199433E-02, 1.74532925199433E-02, false, false, false,
-                false, true, true, true, 0, 0, false);
+
+            ModelDoc.FeatureManager.FeatureExtrusion2(true, false, false, 0, 0, 
+                Parameters["Legs Height"], 0, false, false, false, false, 0, 0, 
+                false, false, false, false, true, true, true, 0, 0, false);
             ModelDoc.SelectionManager.EnableContourSelection = false;
         }
 
@@ -71,13 +73,12 @@ namespace CadPlugin
         private void SketchCircles(double xCenter, double yCenter)
         {
             ModelDoc.ClearSelection2(true);
-            ModelDoc.SketchManager.CreateCircleByRadius(xCenter, yCenter, 0, _legParameters["Radius"]);
+            ModelDoc.SketchManager.CreateCircleByRadius(xCenter, yCenter, 0, 
+                Parameters["Legs Radius"]);
         }
 
         #endregion
 
-
-
-
+        
     }
 }

@@ -84,12 +84,15 @@ namespace CadPlugin
         /// </summary>
         private void LoadUi()
         {
-            var imagePath = Path.Combine(Path.GetDirectoryName(typeof(PluginIntegration).Assembly.CodeBase)
-                .Replace(@"file:\", string.Empty), "logo-small.png");
+            var imagePath = Path.Combine(Path.GetDirectoryName(typeof(PluginIntegration)
+                    .Assembly.CodeBase)
+                .Replace(@"file:\", string.Empty), "Resources\\Images\\logo-small.png");
 
-            _taskpaneView = _solidWorksApplication.CreateTaskpaneView2(imagePath, "That's the plugin of Table");
+            _taskpaneView = _solidWorksApplication.CreateTaskpaneView2(imagePath,
+                "That's the plugin of Table");
 
-            _taskpaneHostUi = (TaskpaneHostUi)_taskpaneView.AddControl(PluginIntegration.SwPluginProgId, string.Empty);
+            _taskpaneHostUi = (TaskpaneHostUi)_taskpaneView
+                .AddControl(PluginIntegration.SwPluginProgId, string.Empty);
         }
 
         /// <summary>
@@ -119,12 +122,12 @@ namespace CadPlugin
         {
             var keyPath = $@"SOFTWARE\SolidWorks\AddIns\{t.GUID:b}";
 
-            using (var rk = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(keyPath))
+            using (var registryKey = Microsoft.Win32.Registry.LocalMachine.CreateSubKey(keyPath))
             {
-                rk.SetValue(null, 1);
+                registryKey.SetValue(null, 1);
 
-                rk.SetValue("Title", "Table Plugin");
-                rk.SetValue("Description", "Plugin that creates 3d model of table");
+                registryKey.SetValue("Title", "Table Plugin");
+                registryKey.SetValue("Description", "Plugin that creates 3d model of table");
             }
         }
 

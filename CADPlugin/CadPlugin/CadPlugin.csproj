@@ -42,11 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseTableBuilder.cs" />
-    <Compile Include="IBuilder.cs" />
-    <Compile Include="TableBuilderManager.cs" />
-    <Compile Include="TableLegsBuilder.cs" />
-    <Compile Include="TableTopBuilder.cs" />
+    <Compile Include="Builders\BaseTableBuilder.cs" />
+    <Compile Include="Builders\IBuildable.cs" />
+    <Compile Include="Builders\LegsWithStrutsBuilder.cs" />
+    <Compile Include="Builders\TableBuilderManager.cs" />
+    <Compile Include="Builders\TableLegsBuilder.cs" />
+    <Compile Include="Builders\TableTopBuilder.cs" />
     <Compile Include="TaskpaneHostUi.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -55,6 +56,7 @@
     </Compile>
     <Compile Include="PluginIntegration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Parameters\TableParameters.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="TaskpaneHostUi.resx">
@@ -62,7 +64,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="logo-small.png">
+    <Content Include="Resources\Images\logo-small.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

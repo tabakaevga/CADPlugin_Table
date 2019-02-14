@@ -7,22 +7,20 @@ using UnitTests.Stubs;
 namespace UnitTests
 {
     /// <summary>
-    /// Тест построителя ножек стола
+    /// Тесты параметров ножек стола
     /// </summary>
     [TestFixture]
-    class TableLegsBuilderTests
+    public class TableTopBuilderTests
     {
         #region Private Fields
 
         private readonly ModelDocStub _modelDoc = new ModelDocStub();
 
-        private readonly Dictionary<string, double> _legsParametersCorrect = new Dictionary<string, double>
+        private readonly Dictionary<string, double> _parametersCorrect = new Dictionary<string, double>()
         {
-            {"Top Width", 0.75},
-            {"Top Length", 0.75},
-            {"Edge Offset", 0.1},
-            {"Legs Height", 0.75},
-            {"Legs Radius", 0.05}
+            {"Top Width", 0.75 },
+            {"Top Length", 0.75 },
+            {"Top Height", 0.05 },
         };
 
         #endregion
@@ -32,11 +30,11 @@ namespace UnitTests
         /// </summary>
         [Test]
         [TestCase(TestName = "Тест с корректными данными")]
-        public void TestLegsBuilderCorrectData()
+        public void TestTopBuilderCorrectData()
         {
             Assert.DoesNotThrow(() =>
             {
-                var builder = new TableLegsBuilder(_modelDoc, _legsParametersCorrect);
+                var builder = new TableTopBuilder(_modelDoc, _parametersCorrect);
             });
         }
 
@@ -51,25 +49,25 @@ namespace UnitTests
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
             {
-                var tableLegsBuilder = new TableLegsBuilder(null, _legsParametersCorrect);
+                var tableTopBuilder = new TableTopBuilder(null, _parametersCorrect);
             });
         }
 
         /// <summary>
-        /// Тест на параметрах ножек null
+        /// Тест на параметрах крышки стола null
         /// </summary>
         [Test]
         [TestCase(TestName = "Тест на исключение, если parameters null")]
-        public void TestConstructorThrowsTopParamsNull()
+        public void TestConstructorThrowsParamsNull()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
             {
-                var tableLegsBuilder = new TableLegsBuilder(_modelDoc, null);
+                var tableTopBuilder = new TableTopBuilder(_modelDoc, null);
             });
         }
 
         /// <summary>
-        /// Тест на пустых параметрах стола
+        /// Тест на пустых параметрах крышки стола
         /// </summary>
         [Test]
         [TestCase(TestName = "Тест на исключение, если parameters пустая")]
@@ -77,11 +75,13 @@ namespace UnitTests
         {
             var exception = Assert.Throws<ArgumentException>(() =>
             {
-                var tableLegsBuilder = new TableLegsBuilder(_modelDoc, new Dictionary<string, double>());
+                var tableTopBuilder = new TableTopBuilder(_modelDoc, new Dictionary<string, double>());
             });
             Assert.That(exception.Message, Is.EqualTo("parameters are empty"));
         }
 
         #endregion
+
+
     }
 }
